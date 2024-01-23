@@ -1,23 +1,24 @@
 package com.example.app3;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
-import androidx.core.view.WindowCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.app3.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,12 +41,38 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "0", Snackbar.LENGTH_LONG)
                         .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
+                        .setAction("0", null).show();
             }
         });
-    }
+
+        final EditText editTextPlan = findViewById(R.id.plan);
+        final TextView textViewReply = findViewById(R.id.ReplyText);
+        textViewReply.setVisibility(View.INVISIBLE);
+
+        Button buttonAsk = findViewById(R.id.Ask);
+        buttonAsk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = editTextPlan.getText().toString();
+                textViewReply.setText(text);
+                textViewReply.setVisibility(View.VISIBLE);
+
+                closeKeyboard();
+            }
+            });
+        }
+
+            public void closeKeyboard(){
+
+            View view = this.getCurrentFocus();
+                if(view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
